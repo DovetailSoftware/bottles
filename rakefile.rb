@@ -78,22 +78,12 @@ task :fast_integration_test do
   sh "src/packages/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe src/Bottles.IntegrationTesting/bin/#{COMPILE_TARGET}/Bottles.IntegrationTesting.dll"
 end
 
-#desc "**Default**, compiles, merges and runs tests"
-#task :default => [:compile, :ilrepack, :unit_test, :integration_test]
-#desc "**Mono**, compiles, merges and runs unit tests"
-#task :mono_ci => [:compile, :ilrepack, :unit_test]
-#desc "Target used for the CI server"
-#task :ci => [:compile, :ilrepack, :unit_test,:history, :package]
-
 desc "Merge dotnetzip assembly into Bottles projects"
 task :ilrepack do
   merge_ionic("src/Bottles/bin/#{COMPILE_TARGET}", 'Bottles.dll')
-  #merge_fubucsprojfile("src/Bottles/bin/#{COMPILE_TARGET}", 'Bottles.dll')
 end
 
 def merge_ionic(dir, assembly)
 	output = File.join(dir, assembly)
   sh "tools/ILMerge.exe /ndebug /target:library /targetplatform:v4 /internalize /out:#{output} /lib:#{dir} #{assembly} Ionic.Zip.dll"
-	#packer = ILRepack.new :out => output, :lib => dir
-	#packer.merge :lib => dir, :refs => [assembly, 'Ionic.Zip.dll']
 end
