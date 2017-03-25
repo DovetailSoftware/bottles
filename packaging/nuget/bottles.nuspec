@@ -12,12 +12,11 @@
     <description>Shared libraries for runtime and deployment packaging of .Net applications</description>
     <tags>packaging areas slices</tags>
     <dependencies>
-      <dependency id="FubuCore" version="1.0.0.210" />
+      <dependency id="FubuCore" />
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\src\Bottles\bin\release\Bottles.*" target="lib" />
-    <file src="ripple.xml" target="tools" />
     <file src="..\..\src\Bottles.Console\bin\release\BottleRunner.exe" target="tools" />
     <file src="..\..\src\Bottles.Console\bin\release\BottleRunner.exe.config" target="tools" />
     <file src="..\..\src\Bottles\bin\release\Bottles.dll" target="tools" />
