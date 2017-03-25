@@ -103,7 +103,7 @@ namespace Bottles.Exploding
             var request = new ExplodeRequest{
                 Directory = directory,
                 GetVersion = () => assembly.GetName().Version.ToString(),
-                LogSameVersion = () => ConsoleWriter.Write("Assembly {0} has already been 'exploded' onto disk".ToFormat(assembly.GetName().FullName)),
+                LogSameVersion = () => { }, //ConsoleWriter.Write("Assembly {0} has already been 'exploded' onto disk".ToFormat(assembly.GetName().FullName))},
                 ExplodeAction = () => explodeAssembly(assembly, directory)
             };
 

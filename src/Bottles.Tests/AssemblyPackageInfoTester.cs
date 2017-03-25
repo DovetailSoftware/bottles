@@ -86,13 +86,16 @@ namespace Bottles.Tests
         [Test]
         public void can_retrieve_web_content_folder_from_package()
         {
-            var expected = "not this";
+            var dir = Path.GetDirectoryName(GetType().Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+
+            var actual = "not this";
             thePackage.ForFolder(BottleFiles.WebContentFolder, folder =>
             {
-                expected = folder;
+                actual = folder;
             });
 
-            expected.ShouldEqual("content".AppendPath("AssemblyPackage", "WebContent").ToFullPath());
+            actual.ShouldEqual("content".AppendPath("AssemblyPackage", "WebContent").ToFullPath());
         }
     }
 }

@@ -42,22 +42,27 @@ assembly-pak -> Bundle up the content and data files for a self contained assemb
             _domain.Dispose();
         }
 
-        public static string SolutionDirectory = ".".ToFullPath().ParentDirectory().ParentDirectory().ParentDirectory().ParentDirectory();
-        public static string StagingDirectory = SolutionDirectory.AppendPath("bottles-staging");
-        public static string SourceDirectory = SolutionDirectory.AppendPath("src").AppendPath("BottleProject");
-        public static string ZipsDirectory = SolutionDirectory.AppendPath("zips");
-
-        private static string BottleRunnerFile =
-            SolutionDirectory.AppendPath("src").AppendPath("Bottles.Console").AppendPath("bin").AppendPath("debug").
-                AppendPath("BottleRunner.exe");
+        public static string SolutionDirectory;
+        public static string StagingDirectory;
+        public static string SourceDirectory;
+        public static string ZipsDirectory;
+        private static readonly string BottleRunnerFile;
 
         static IntegrationTestContext()
         {
+            var dir = Path.GetDirectoryName(typeof(IntegrationTestContext).Assembly.CodeBase);
+            dir = new System.Uri(dir).LocalPath;
+            Directory.SetCurrentDirectory(dir);
+
+            SolutionDirectory = ".".ToFullPath().ParentDirectory().ParentDirectory().ParentDirectory().ParentDirectory();
+            StagingDirectory = SolutionDirectory.AppendPath("bottles-staging");
+            SourceDirectory = SolutionDirectory.AppendPath("src").AppendPath("BottleProject");
+            ZipsDirectory = SolutionDirectory.AppendPath("zips");
+            BottleRunnerFile = SolutionDirectory.AppendPath("src").AppendPath("Bottles.Console").AppendPath("bin").AppendPath("debug").AppendPath("BottleRunner.exe");
+
             if (!File.Exists(BottleRunnerFile))
             {
-                BottleRunnerFile =
-            SolutionDirectory.AppendPath("src").AppendPath("Bottles.Console").AppendPath("bin").AppendPath("release").
-                AppendPath("BottleRunner.exe");
+                BottleRunnerFile = SolutionDirectory.AppendPath("src").AppendPath("Bottles.Console").AppendPath("bin").AppendPath("release").AppendPath("BottleRunner.exe");
             }
         }
 
@@ -83,7 +88,8 @@ assembly-pak -> Bundle up the content and data files for a self contained assemb
         {
             var info = new ProcessStartInfo
             {
-                FileName = SolutionDirectory.AppendPath("compile-bottle-staging.cmd"),
+                FileName = "cmd.exe",
+                Arguments = $"/c {SolutionDirectory.AppendPath("compile-bottle-staging.cmd")}",
                 WorkingDirectory = SolutionDirectory
 
             };

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Bottles.Creation;
 using FubuCore;
 using NUnit.Framework;
@@ -46,7 +48,15 @@ namespace Bottles.Tests
         [Test]
         public void find_assembly_names_smoke_tester()
         {
-            var names = new FileSystem().FindAssemblyNames(".".ToFullPath());
+            var dir = Path.GetDirectoryName(GetType().Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+
+            var fullPath = ".".ToFullPath();
+            System.Console.WriteLine($"$$$$$$$ {fullPath} ******");
+
+            var names = new FileSystem().FindAssemblyNames(fullPath);
+
+            System.Console.WriteLine($"*********** {names.Join(", ")} ******");
         
             names.ShouldContain("StructureMap");
             names.ShouldContain("Bottles");
