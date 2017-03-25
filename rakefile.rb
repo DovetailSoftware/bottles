@@ -93,6 +93,7 @@ end
 
 def merge_ionic(dir, assembly)
 	output = File.join(dir, assembly)
-	packer = ILRepack.new :out => output, :lib => dir
-	packer.merge :lib => dir, :refs => [assembly, 'Ionic.Zip.dll']
+  sh "tools/ILMerge.exe /ndebug /target:library /targetplatform:v4 /internalize /out:#{output} /lib:#{dir} #{assembly} Ionic.Zip.dll"
+	#packer = ILRepack.new :out => output, :lib => dir
+	#packer.merge :lib => dir, :refs => [assembly, 'Ionic.Zip.dll']
 end
