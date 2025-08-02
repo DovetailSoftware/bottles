@@ -1,5 +1,5 @@
 using Bottles.Diagnostics;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests
@@ -34,7 +34,7 @@ namespace Bottles.Tests
             var package1 = new StubBottle("1");
             var package2 = new StubBottle("2");
             var package3 = new StubBottle("3");
-        
+
             log.AddChild(loader1, loader2, loader3, package1, package2, package3);
 
             log.FindChildren<IPackageLoader>().ShouldHaveTheSameElementsAs(loader1, loader2, loader3);

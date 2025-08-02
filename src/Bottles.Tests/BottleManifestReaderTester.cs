@@ -1,7 +1,7 @@
 using Bottles.Manifest;
 using FubuCore;
 using NUnit.Framework;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests
 {
@@ -22,8 +22,9 @@ namespace Bottles.Tests
             system.CreateDirectory("package1", "WebContent");
             system.CreateDirectory("package1", "Data");
 
-            theOriginalManifest = new PackageManifest(){
-                Assemblies = new string[]{"a", "b", "c"},
+            theOriginalManifest = new PackageManifest()
+            {
+                Assemblies = new string[] { "a", "b", "c" },
                 Name = "Extraordinary"
             };
 

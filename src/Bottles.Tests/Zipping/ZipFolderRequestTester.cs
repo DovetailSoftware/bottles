@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Bottles.Zipping;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests.Zipping
@@ -72,7 +72,7 @@ namespace Bottles.Tests.Zipping
             theResultingZipEntries().ShouldHaveTheSameElementsAs(
                 new StubZipEntry(FileSystem.Combine("zip", "a.txt"), string.Empty),
                 new StubZipEntry(FileSystem.Combine("zip", "f1", "b.txt"), "f1"),
-                new StubZipEntry(FileSystem.Combine("zip", "f1", "f2", "c.txt"), FileSystem.Combine("f1","f2"))
+                new StubZipEntry(FileSystem.Combine("zip", "f1", "f2", "c.txt"), FileSystem.Combine("f1", "f2"))
                 );
         }
 
@@ -90,7 +90,7 @@ namespace Bottles.Tests.Zipping
             theResultingZipEntries().ShouldHaveTheSameElementsAs(
                 new StubZipEntry(FileSystem.Combine("zip", "a.txt"), string.Empty),
                 new StubZipEntry(FileSystem.Combine("zip", "f1", "b.txt"), "f1"),
-                new StubZipEntry(FileSystem.Combine("zip", "f1", "f2", "c.txt"), FileSystem.Combine("f1","f2"))
+                new StubZipEntry(FileSystem.Combine("zip", "f1", "f2", "c.txt"), FileSystem.Combine("f1", "f2"))
                 );
         }
 
@@ -161,15 +161,15 @@ namespace Bottles.Tests.Zipping
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (StubZipEntry)) return false;
-            return Equals((StubZipEntry) obj);
+            if (obj.GetType() != typeof(StubZipEntry)) return false;
+            return Equals((StubZipEntry)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((File != null ? File.GetHashCode() : 0)*397) ^ (ZipFolder != null ? ZipFolder.GetHashCode() : 0);
+                return ((File != null ? File.GetHashCode() : 0) * 397) ^ (ZipFolder != null ? ZipFolder.GetHashCode() : 0);
             }
         }
 

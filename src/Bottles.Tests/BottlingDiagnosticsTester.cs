@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using Bottles.Diagnostics;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using System.Linq;
 using FubuCore;
@@ -37,7 +37,7 @@ namespace Bottles.Tests
 
             diagnostics.LogFor(loader).Description.ShouldEqual(loader.ToString());
         }
-        
+
         [Test]
         public void log_execution_happy_path()
         {

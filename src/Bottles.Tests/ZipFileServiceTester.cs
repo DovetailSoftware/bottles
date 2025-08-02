@@ -2,7 +2,7 @@ using System.IO;
 using AssemblyPackage;
 using Bottles.Zipping;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests
@@ -13,8 +13,8 @@ namespace Bottles.Tests
         [SetUp]
         public void SetUp()
         {
-            var assembly = typeof (AssemblyPackageMarker).Assembly;
-            var stream = assembly.GetManifestResourceStream(typeof (AssemblyPackageMarker), "pak-data.zip");
+            var assembly = typeof(AssemblyPackageMarker).Assembly;
+            var stream = assembly.GetManifestResourceStream(typeof(AssemblyPackageMarker), "pak-data.zip");
 
             var service = new ZipFileService(new FileSystem());
             service.ExtractTo("description of this", stream, "package-data");

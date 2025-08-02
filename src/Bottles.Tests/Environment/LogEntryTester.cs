@@ -1,6 +1,6 @@
 using Bottles.Diagnostics;
 using Bottles.Environment;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests.Environment

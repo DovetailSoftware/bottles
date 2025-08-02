@@ -3,7 +3,7 @@ using System.IO;
 using Bottles.Commands;
 using Bottles.Creation;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -27,7 +27,6 @@ namespace Bottles.Tests.Commands
             theManifest = new PackageManifest();
             Services.PartialMockTheClassUnderTest();
         }
-
 
         private void theManifestFileDoesNotExist()
         {
@@ -89,7 +88,7 @@ namespace Bottles.Tests.Commands
             execute();
 
             MockFor<IFileSystem>().AssertWasNotCalled(x => x.DeleteFile(theInput.ZipFileFlag));
-        
+
             ClassUnderTest.AssertWasNotCalled(x => x.CreatePackage(theInput, MockFor<IFileSystem>()));
             ClassUnderTest.AssertWasCalled(x => x.WriteZipFileAlreadyExists(theInput.ZipFileFlag));
         }

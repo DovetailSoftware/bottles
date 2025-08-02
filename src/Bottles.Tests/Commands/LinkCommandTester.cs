@@ -2,7 +2,7 @@ using System.IO;
 using Bottles.Commands;
 using Bottles.PackageLoaders.LinkedFolders;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -35,7 +35,6 @@ namespace Bottles.Tests.Commands
             MockFor<ILinksService>().Stub(x => x.GetLinkManifest(theInput.BottleFolder)).Return(btlManifest);
             MockFor<ILinksService>().Stub(x => x.GetLinkManifest(theInput.AppFolder)).Return(appManifest);
         }
-
 
         private void execute()
         {

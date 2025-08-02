@@ -10,7 +10,7 @@ using Bottles.PackageLoaders.Assemblies;
 using Bottles.Tests.Zipping;
 using Bottles.Zipping;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -24,14 +24,14 @@ namespace Bottles.Tests.Creation
         private CreateBottleInput theInput;
         private StubZipFileService _theZipFileService;
         private string thePackageManifestFileName;
-		private string theBaseFolder;
-		private string theBinFolder;
-		
+        private string theBaseFolder;
+        private string theBinFolder;
+
         protected override void beforeEach()
         {
-			theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
-			theBinFolder = Path.Combine(theBaseFolder, "bin");	
-			
+            theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
+            theBinFolder = Path.Combine(theBaseFolder, "bin");
+
             theManifest = new PackageManifest
             {
                 ContentFileSet = new FileSet()
@@ -50,17 +50,17 @@ namespace Bottles.Tests.Creation
 
             theAssemblyFiles = new AssemblyFiles()
             {
-                Files = new string[] { 
-					FileSystem.Combine(theBinFolder, "a.dll"), 
-					FileSystem.Combine(theBinFolder, "b.dll"), 
-					FileSystem.Combine(theBinFolder, "c.dll") 
-				},
+                Files = new string[] {
+                    FileSystem.Combine(theBinFolder, "a.dll"),
+                    FileSystem.Combine(theBinFolder, "b.dll"),
+                    FileSystem.Combine(theBinFolder, "c.dll")
+                },
                 MissingAssemblies = new string[0],
-                PdbFiles = new string[] { 
-					FileSystem.Combine(theBinFolder, "a.pdb"), 
-					FileSystem.Combine(theBinFolder, "b.pdb"), 
-					FileSystem.Combine(theBinFolder, "c.pdb")
-				},
+                PdbFiles = new string[] {
+                    FileSystem.Combine(theBinFolder, "a.pdb"),
+                    FileSystem.Combine(theBinFolder, "b.pdb"),
+                    FileSystem.Combine(theBinFolder, "c.pdb")
+                },
             };
 
             MockFor<IAssemblyFileFinder>()
@@ -112,7 +112,8 @@ namespace Bottles.Tests.Creation
         [Test]
         public void add_the_content_files()
         {
-            _theZipFileService.ZipRequests.ShouldContain(new ZipFolderRequest(){
+            _theZipFileService.ZipRequests.ShouldContain(new ZipFolderRequest()
+            {
                 FileSet = theManifest.ContentFileSet,
                 ZipDirectory = BottleFiles.WebContentFolder,
                 RootDirectory = theInput.PackageFolder
@@ -127,15 +128,15 @@ namespace Bottles.Tests.Creation
         private AssemblyFiles theAssemblyFiles;
         private CreateBottleInput theInput;
         private StubZipFileService _theZipFileService;
-		
-		private string theBaseFolder;
-		private string theBinFolder;
+
+        private string theBaseFolder;
+        private string theBinFolder;
 
         protected override void beforeEach()
         {
-			theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
-			theBinFolder = Path.Combine(theBaseFolder, "bin");	
-			
+            theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
+            theBinFolder = Path.Combine(theBaseFolder, "bin");
+
             theManifest = new PackageManifest
             {
                 ContentFileSet = new FileSet()
@@ -154,17 +155,17 @@ namespace Bottles.Tests.Creation
 
             theAssemblyFiles = new AssemblyFiles()
             {
-                Files = new string[] { 
-					FileSystem.Combine(theBinFolder, "a.dll"), 
-					FileSystem.Combine(theBinFolder, "b.dll"), 
-					FileSystem.Combine(theBinFolder, "c.dll") 
-				},
+                Files = new string[] {
+                    FileSystem.Combine(theBinFolder, "a.dll"),
+                    FileSystem.Combine(theBinFolder, "b.dll"),
+                    FileSystem.Combine(theBinFolder, "c.dll")
+                },
                 MissingAssemblies = new string[0],
-                PdbFiles = new string[] { 
-					FileSystem.Combine(theBinFolder, "a.pdb"), 
-					FileSystem.Combine(theBinFolder, "b.pdb"), 
-					FileSystem.Combine(theBinFolder, "c.pdb") 
-				},
+                PdbFiles = new string[] {
+                    FileSystem.Combine(theBinFolder, "a.pdb"),
+                    FileSystem.Combine(theBinFolder, "b.pdb"),
+                    FileSystem.Combine(theBinFolder, "c.pdb")
+                },
             };
 
             MockFor<IAssemblyFileFinder>()
@@ -248,15 +249,16 @@ namespace Bottles.Tests.Creation
         private PackageManifest theManifest;
         private AssemblyFiles theAssemblyFiles;
         private CreateBottleInput theInput;
-		private string theBaseFolder;
-		private string theBinFolder;
-		
+        private string theBaseFolder;
+        private string theBinFolder;
+
         protected override void beforeEach()
         {
-			theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
-			theBinFolder = Path.Combine(theBaseFolder, "bin");	
-			
-            theManifest = new PackageManifest{
+            theBaseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
+            theBinFolder = Path.Combine(theBaseFolder, "bin");
+
+            theManifest = new PackageManifest
+            {
                 ContentFileSet = new FileSet()
             };
 
@@ -264,21 +266,22 @@ namespace Bottles.Tests.Creation
             theManifest.AddAssembly("B");
             theManifest.AddAssembly("C");
 
-            theInput = new CreateBottleInput(){
+            theInput = new CreateBottleInput()
+            {
                 PackageFolder = theBaseFolder
             };
 
             theAssemblyFiles = new AssemblyFiles()
             {
-                Files = new[] { "a.dll", "b.dll"},
-                MissingAssemblies = new[]{"c"},
-                PdbFiles = new[] { "a.dll", "b.dll", "c.dll"},
+                Files = new[] { "a.dll", "b.dll" },
+                MissingAssemblies = new[] { "c" },
+                PdbFiles = new[] { "a.dll", "b.dll", "c.dll" },
             };
 
             MockFor<IAssemblyFileFinder>()
                 .Stub(x => x.FindAssemblies(theBinFolder, theManifest.Assemblies))
                 .Return(theAssemblyFiles);
-        
+
             ClassUnderTest.CreatePackage(theInput, theManifest);
         }
 
@@ -310,7 +313,7 @@ namespace Bottles.Tests.Creation
 
             theManifest = new PackageManifest();
             theManifest.SetRole(BottleRoles.Config);
-            
+
             theInput = new CreateBottleInput()
             {
                 PackageFolder = theBaseFolder

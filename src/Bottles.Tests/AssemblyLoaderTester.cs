@@ -2,9 +2,9 @@ using System;
 using System.Reflection;
 using Bottles.Diagnostics;
 using Bottles.PackageLoaders.Assemblies;
-using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace Bottles.Tests
 {
@@ -13,7 +13,7 @@ namespace Bottles.Tests
     {
         protected override void beforeEach()
         {
-            
+
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Bottles.Tests
 
             MockFor<IBottlingDiagnostics>().AssertWasCalled(x => x.LogAssembly(package, assembly, AssemblyLoader.DIRECTLY_REGISTERED_MESSAGE));
 
-        
+
             ClassUnderTest.Assemblies.Contains(assembly).ShouldBeTrue();
         }
 
@@ -135,10 +135,7 @@ namespace Bottles.Tests
 
             MockFor<IBottlingDiagnostics>().AssertWasCalled(x => x.LogDuplicateAssembly(package, theAssemblyName));
 
-
             ClassUnderTest.Assemblies.Count.ShouldEqual(1);
         }
     }
-
-    
 }

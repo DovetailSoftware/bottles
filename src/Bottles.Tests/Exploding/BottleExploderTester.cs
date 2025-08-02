@@ -6,7 +6,7 @@ using Bottles.Exploding;
 using Bottles.Zipping;
 using FubuCore;
 using FubuCore.CommandLine;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Linq;
@@ -119,7 +119,7 @@ namespace Bottles.Tests.Exploding
 
             string directory = BottleFiles.GetDirectoryForExplodedPackage(theApplicationDirectory, "pak1");
 
-            ClassUnderTest.ReadVersion(directory).ShouldEqual(guid);
+            ClassUnderTest.ReadVersion(directory).ShouldEqual(guid.ToString());
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Bottles.Tests.Exploding
             string directory = FileSystem.Combine(theApplicationDirectory, "bin", BottleFiles.PackagesFolder,
                                       "pak1");
 
-            ClassUnderTest.ReadVersion(directory).ShouldEqual(Guid.Empty);
+            ClassUnderTest.ReadVersion(directory).ShouldEqual(Guid.Empty.ToString());
         }
     }
 
@@ -167,7 +167,7 @@ namespace Bottles.Tests.Exploding
             zipGuid = Guid.NewGuid();
             folderGuid = Guid.NewGuid();
             thePackagesAlreadyExplodedAre("pak1");
-        
+
             theExistingVersionIs("pak1", folderGuid);
             theZipVersionIs("pak1", zipGuid);
 
@@ -245,7 +245,7 @@ namespace Bottles.Tests.Exploding
             var directoryName = BottleFiles.GetDirectoryForExplodedPackage(theApplicationDirectory, packageName);
 
             MockFor<IZipFileService>().AssertWasCalled(x => x.ExtractTo(fileName, directoryName, ExplodeOptions.DeleteDestination));
-            
+
         }
 
         protected void assertZipFileWasNotExploded(string packageName)
@@ -268,7 +268,8 @@ namespace Bottles.Tests.Exploding
 
             var directory = BottleFiles.GetApplicationPackagesDirectory(theApplicationDirectory);
 
-            MockFor<IFileSystem>().Stub(x => x.FileNamesFor(new FileSet(){
+            MockFor<IFileSystem>().Stub(x => x.FileNamesFor(new FileSet()
+            {
                 Include = "*.zip"
             }, directory)).Return(zipFiles);
         }
@@ -325,7 +326,7 @@ namespace Bottles.Tests.Exploding
             var pathParts = new string[]{theApplicationDirectory, "bin", BottleFiles.PackagesFolder, packageName,
                              BottleFiles.VersionFile};
 
-            
+
             MockFor<IFileSystem>().Stub(x => x.FileExists(pathParts)).Return(false);
         }
 

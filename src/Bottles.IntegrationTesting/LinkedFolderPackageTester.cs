@@ -1,7 +1,7 @@
 ﻿using System;
 using FubuCore;
-using FubuTestingSupport;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Bottles.IntegrationTesting
 {
@@ -25,10 +25,10 @@ namespace Bottles.IntegrationTesting
 
             _domain.Proxy.LoadViaFolder(StagingDirectory);
             _domain.Proxy.ReadWebContent("content/scripts/script1.js").Trim()
-                   .ShouldEqual("var x = 1;");
+                   .ShouldBe("var x = 1;");
 
             _domain.Proxy.ReadData("1.txt").Trim()
-                   .ShouldEqual("Original Value");
+                   .ShouldBe("Original Value");
         }
     }
 }

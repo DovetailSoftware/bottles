@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests
@@ -27,8 +27,8 @@ namespace Bottles.Tests
 
         void clearDir(string dir)
         {
-            if(Directory.Exists(dir))
-                Directory.Delete(dir,true);
+            if (Directory.Exists(dir))
+                Directory.Delete(dir, true);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Bottles.Tests
         {
             clearDir(@"atlantis");
 
-			ClassUnderTest.Copy("home".AppendPath("bob.txt"), @"atlantis{0}".ToFormat(Path.DirectorySeparatorChar));
+            ClassUnderTest.Copy("home".AppendPath("bob.txt"), @"atlantis{0}".ToFormat(Path.DirectorySeparatorChar));
 
             ClassUnderTest.FileExists("atlantis".AppendPath("bob.txt")).ShouldBeTrue();
 
@@ -81,6 +81,6 @@ namespace Bottles.Tests
             clearFile("atlantis");
         }
 
-        
+
     }
 }

@@ -1,6 +1,6 @@
 using Bottles.Commands;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -28,7 +28,8 @@ namespace Bottles.Tests.Commands
         [Test]
         public void add_alias_when_it_does_not_exist()
         {
-            theCommand.Execute(new AliasInput(){
+            theCommand.Execute(new AliasInput()
+            {
                 Name = "agent",
                 Folder = "/something"
             }, fileSystem);
@@ -59,10 +60,7 @@ namespace Bottles.Tests.Commands
         {
             theRegistry.CreateAlias("agent", "/different");
 
-            theCommand.Execute(new AliasInput()
-            {
-
-            }, fileSystem);
+            theCommand.Execute(new AliasInput(), fileSystem);
         }
 
         [Test]
@@ -72,7 +70,7 @@ namespace Bottles.Tests.Commands
             theRegistry.CreateAlias("agent2", "/different");
             theRegistry.CreateAlias("agent3", "/different");
 
-            theCommand.Execute(new AliasInput()
+            theCommand.Execute(new AliasInput
             {
                 Name = "agent",
                 RemoveFlag = true
@@ -80,9 +78,8 @@ namespace Bottles.Tests.Commands
 
             fileSystem.AssertWasCalled(x => x.WriteObjectToFile(AliasRegistry.ALIAS_FILE, theRegistry));
 
-            theRegistry.Aliases.ShouldHaveCount(2);
+            theRegistry.Aliases.Length.ShouldBe(2);
             theRegistry.AliasFor("agent").ShouldBeNull();
         }
-
     }
 }

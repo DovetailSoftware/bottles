@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Bottles.Manifest;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests
@@ -11,19 +11,19 @@ namespace Bottles.Tests
     public class BottleInfoTester
     {
         private PackageInfo thePackage;
-		private string theDataFolder;
+        private string theDataFolder;
 
         [SetUp]
         public void SetUp()
         {
-			theDataFolder = "data";
-			
+            theDataFolder = "data";
+
             if (Directory.Exists(theDataFolder))
             {
                 Directory.Delete(theDataFolder, true);
             }
 
-            thePackage = new PackageInfo(new PackageManifest(){Name="a"});
+            thePackage = new PackageInfo(new PackageManifest() { Name = "a" });
             thePackage.RegisterFolder(BottleFiles.DataFolder, Path.GetFullPath(theDataFolder));
         }
 
@@ -33,7 +33,7 @@ namespace Bottles.Tests
             var dep1 = Dependency.Optional("Bottle1");
             var dep2 = Dependency.Optional("Bottle2");
             var dep3 = Dependency.Optional("Bottle3");
-        
+
             thePackage.AddDependency(dep1);
             thePackage.AddDependency(dep2);
             thePackage.AddDependency(dep3);
@@ -62,7 +62,7 @@ namespace Bottles.Tests
 
             File.WriteAllText(name, text);
         }
-        
+
         public IEnumerable<string> readFiles(string searchString)
         {
             var list = new List<string>();
@@ -92,7 +92,7 @@ namespace Bottles.Tests
             ((IPackageInfo)thePackage).ForFiles(BottleFiles.DataFolder, "*.*", (name, stream) => list.Add(name));
 
             list.Sort();
-            list.ShouldHaveTheSameElementsAs("c.txt", "e.t2", join("st", "a.txt"), join("st",  "b.txt"), join("st", "d.t2"));
+            list.ShouldHaveTheSameElementsAs("c.txt", "e.t2", join("st", "a.txt"), join("st", "b.txt"), join("st", "d.t2"));
         }
 
         [Test]

@@ -1,26 +1,25 @@
-using System;
 using System.IO;
-using Ionic.Zip;
+using System.IO.Compression;
 
 namespace Bottles.Zipping
 {
     public class ZipFileWrapper : IZipFile
     {
-        private readonly ZipFile _file;
+        private readonly ZipArchive _file;
 
-        public ZipFileWrapper(ZipFile file)
+        public ZipFileWrapper(ZipArchive file)
         {
             _file = file;
         }
 
         public void AddFile(string fileName)
         {
-            _file.AddFile(fileName, "");
+            _file.CreateEntryFromFile(fileName, Path.GetFileName(fileName));
         }
 
         public void AddFile(string fileName, string zipFolder)
         {
-            _file.AddFile(fileName, zipFolder);
+            _file.CreateEntryFromFile(fileName, Path.Combine(zipFolder, Path.GetFileName(fileName)));
         }
 
         public void AddFiles(ZipFolderRequest request)

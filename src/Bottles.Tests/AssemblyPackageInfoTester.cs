@@ -4,10 +4,10 @@ using System.Reflection;
 using AssemblyPackage;
 using AttributeMarkedBottle;
 using Bottles.PackageLoaders.Assemblies;
-using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
 using FubuCore;
+using Shouldly;
 
 namespace Bottles.Tests
 {

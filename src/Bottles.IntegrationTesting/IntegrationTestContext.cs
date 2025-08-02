@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using FubuCore;
-using FubuTestingSupport;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Bottles.IntegrationTesting
 {
@@ -18,8 +18,6 @@ assembly-pak -> Bundle up the content and data files for a self contained assemb
         init -> Initialize a bottle manifest
         link -> Links a package folder to an application folder in development mode
      */
-
-
 
     public class IntegrationTestContext
     {
@@ -91,11 +89,14 @@ assembly-pak -> Bundle up the content and data files for a self contained assemb
                 FileName = "cmd.exe",
                 Arguments = $"/c {SolutionDirectory.AppendPath("compile-bottle-staging.cmd")}",
                 WorkingDirectory = SolutionDirectory
-
             };
 
-            var returnCode = new ProcessRunner().Run(info, text => Debug.WriteLine(text));
-            returnCode.ExitCode.ShouldEqual(0);
+            var returnCode = new ProcessRunner().Run(info, text =>
+            {
+                Console.WriteLine(text);
+                Debug.WriteLine(text);
+            });
+            returnCode.ExitCode.ShouldBe(0);
         }
 
         public static void SetAssemblyVersion(string version)
@@ -144,7 +145,7 @@ assembly-pak -> Bundle up the content and data files for a self contained assemb
             };
 
             var processReturn = new ProcessRunner().Run(processInfo, text => Debug.WriteLine(text));
-            processReturn.ExitCode.ShouldEqual(0);
+            processReturn.ExitCode.ShouldBe(0);
         }
 
         public static void AlterManifest(Action<PackageManifest> alteration)

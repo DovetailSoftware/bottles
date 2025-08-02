@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using Bottles.PackageLoaders.Assemblies;
 using FubuCore;
-using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace Bottles.Tests
 {

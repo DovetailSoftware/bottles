@@ -1,5 +1,5 @@
-﻿using FubuTestingSupport;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Shouldly;
 
 namespace Bottles.IntegrationTesting
 {
@@ -17,15 +17,15 @@ namespace Bottles.IntegrationTesting
             });
 
             Recompile();
-            
+
             RunBottlesCommand("create bottles-staging -o zips/BottleProject.zip");
 
             _domain.Proxy.LoadViaZip(ZipsDirectory);
             _domain.Proxy.ReadWebContent("content/scripts/script1.js").Trim()
-                   .ShouldEqual("var x = 1;");
+                   .ShouldBe("var x = 1;");
 
             _domain.Proxy.ReadData("1.txt").Trim()
-                   .ShouldEqual("Original Value");
+                   .ShouldBe("Original Value");
         }
 
         [Test]
@@ -46,10 +46,10 @@ namespace Bottles.IntegrationTesting
             RunBottlesCommand("create bottles-staging -o zips/BottleProject.zip");
 
             _domain.Proxy.LoadViaZip(ZipsDirectory);
-            
+
             _domain.Proxy
                 .ReadConfig("1.txt").Trim()
-                .ShouldEqual("some config stuff");
+                .ShouldBe("some config stuff");
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Bottles.IntegrationTesting
 
             _domain.Proxy
                 .ReadData("1.txt").Trim()
-                .ShouldEqual("some data stuff");
+                .ShouldBe("some data stuff");
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Bottles.IntegrationTesting
             // Check the initial state
             _domain.Proxy.LoadViaZip(ZipsDirectory);
             _domain.Proxy.ReadWebContent("content/scripts/script1.js").Trim()
-                   .ShouldEqual("var x = 1;");
+                   .ShouldBe("var x = 1;");
 
             // Now mess with things
             SetData("Different Value");
@@ -108,10 +108,10 @@ namespace Bottles.IntegrationTesting
 
             _domain.Proxy.LoadViaZip(ZipsDirectory);
             _domain.Proxy.ReadWebContent("content/scripts/script1.js").Trim()
-                   .ShouldEqual("var z = 2;");
+                   .ShouldBe("var z = 2;");
 
             _domain.Proxy.ReadData("1.txt").Trim()
-                   .ShouldEqual("Different Value");
+                   .ShouldBe("Different Value");
         }
     }
 }

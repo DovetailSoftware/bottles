@@ -1,7 +1,8 @@
+using System;
 using Bottles.Configuration;
 using Bottles.Diagnostics;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -26,7 +27,7 @@ namespace Bottles.Tests.Configuration
         [Test]
         public void each_rule_gets_evaluated()
         {
-            theInstaller.Activate(new IPackageInfo[0], new PackageLog());
+            theInstaller.Activate(Array.Empty<IPackageInfo>(), new PackageLog());
 
             r1.AssertWasCalled(x => x.Evaluate(Arg<BottleConfiguration>.Is.NotNull));
             r2.AssertWasCalled(x => x.Evaluate(Arg<BottleConfiguration>.Is.NotNull));
@@ -38,8 +39,8 @@ namespace Bottles.Tests.Configuration
             r1.Stub(x => x.Evaluate(Arg<BottleConfiguration>.Is.NotNull))
                 .WhenCalled(mi => mi.Arguments[0].As<BottleConfiguration>().RegisterError(new MissingService(typeof(object))));
 
-            Exception<BottleConfigurationException>
-                .ShouldBeThrownBy(() => theInstaller.Activate(new IPackageInfo[0], new PackageLog()));
+            Should.Throw<BottleConfigurationException>(() =>
+                theInstaller.Activate(Array.Empty<IPackageInfo>(), new PackageLog()));
         }
     }
 }

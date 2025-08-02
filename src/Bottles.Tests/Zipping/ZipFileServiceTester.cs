@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Bottles.Zipping;
 using FubuCore;
-using FubuTestingSupport;
+using Shouldly;
 using Ionic.Zip;
 using NUnit.Framework;
 
@@ -31,13 +31,14 @@ namespace Bottles.Tests.Zipping
 
             var service = new ZipFileService(new FileSystem());
 
-            service.GetVersion("zip1.zip").ShouldEqual(guid);
+            service.GetVersion("zip1.zip").ShouldBe(guid.ToString());
         }
 
         [Test]
         public void read_a_package_manifest()
         {
-            var manifest = new PackageManifest{
+            var manifest = new PackageManifest
+            {
                 Role = "application",
                 Name = "something"
             };
@@ -70,11 +71,11 @@ namespace Bottles.Tests.Zipping
 
             fileSystem.FileExists("nonexist".AppendPath("silly.zip")).ShouldBeFalse();
 
-            fileSystem.WriteStringToFile("bob.txt","hi");
+            fileSystem.WriteStringToFile("bob.txt", "hi");
             var service = new ZipFileService(fileSystem);
-            service.CreateZipFile("nonexist".AppendPath("silly.zip"), f=>
+            service.CreateZipFile("nonexist".AppendPath("silly.zip"), f =>
             {
-                f.AddFile("bob.txt","");
+                f.AddFile("bob.txt", "");
             });
 
             fileSystem.FileExists("nonexist".AppendPath("silly.zip")).ShouldBeTrue();

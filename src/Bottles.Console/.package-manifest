@@ -5,6 +5,4 @@
   <assembly>BottleRunner</assembly>
   <assembly>Bottles</assembly>
   <assembly>FubuCore</assembly>
-  <assembly>HtmlTags</assembly>
-  <assembly>Ionic.Zip</assembly>
 </package>

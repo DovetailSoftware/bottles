@@ -5,14 +5,14 @@ using Bottles.Diagnostics;
 using FubuCore.Util;
 using NUnit.Framework;
 using System.Linq;
-using FubuTestingSupport;
+using Shouldly;
 using System.Collections.Generic;
 using Rhino.Mocks;
 
 namespace Bottles.Tests
 {
     [TestFixture]
-    public class BottlingDependencyProcessorTester : 
+    public class BottlingDependencyProcessorTester :
         InteractionContext<BottleDependencyProcessor>
     {
         IList<StubBottle> thePackages;
@@ -28,7 +28,7 @@ namespace Bottles.Tests
 
             theDiagnostics = new StubBottleDiagnostics();
         }
-       
+
 
         [Test]
         public void order_by_name_in_the_absence_of_no_other_information()
@@ -108,7 +108,7 @@ namespace Bottles.Tests
             hasPackage("D");
             hasPackage("E");
             // Z does not exist
-            //hasPackage("Z"); 
+            //hasPackage("Z");
 
             theOrderedPackageNamesShouldBe("C", "D", "E", "B", "A");
         }
@@ -117,7 +117,7 @@ namespace Bottles.Tests
         private StubBottle hasPackage(string name)
         {
             var x = new StubBottle(name);
-            if(thePackages.Any(p=>p.Name.Equals(x.Name)))
+            if (thePackages.Any(p => p.Name.Equals(x.Name)))
             {
                 return thePackages.First(p => p.Name.Equals(name));
             }
@@ -154,7 +154,7 @@ namespace Bottles.Tests
 
         public void LogPackage(IPackageInfo package, IPackageLoader loader)
         {
-      
+
         }
 
         public void LogBootstrapperRun(IBootstrapper bootstrapper, IEnumerable<IActivator> activators)

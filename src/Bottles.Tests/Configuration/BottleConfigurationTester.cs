@@ -1,5 +1,5 @@
 using Bottles.Configuration;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests.Configuration
@@ -56,7 +56,7 @@ namespace Bottles.Tests.Configuration
 
         public class FakeError : BottleConfigurationError
         {
-            
+
         }
     }
 }

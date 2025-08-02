@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests
@@ -33,7 +33,7 @@ namespace Bottles.Tests
                 });
             });
 
-            Exception<ApplicationException>.ShouldBeThrownBy(() =>
+            Should.Throw<ApplicationException>(() =>
             {
                 PackageRegistry.AssertNoFailures();
             }).Message.ShouldContain("You shall not pass");
@@ -70,7 +70,7 @@ namespace Bottles.Tests
                         hasNotRun = false;
                     })};
                 });
-            }, runActivators:false);
+            }, runActivators: false);
             hasNotRun.ShouldBeTrue();
         }
     }

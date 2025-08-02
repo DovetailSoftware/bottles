@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using FubuCore;
 using FubuCore.Descriptions;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 
 namespace Bottles.Tests

@@ -6,9 +6,9 @@ namespace Bottles
 {
     internal class Program
     {
-        private static bool success;
+        static bool success;
 
-        private static int Main(string[] args)
+        static int Main(string[] args)
         {
             try
             {

@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 using System.Linq;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests
 {
@@ -60,7 +60,7 @@ namespace Bottles.Tests
                 x.PackageFor("A").MandatoryDependency("B");
             });
 
-            Exception<ApplicationException>.ShouldBeThrownBy(() =>
+            Should.Throw<ApplicationException>(() =>
             {
                 PackageRegistry.AssertNoFailures();
             }).Message.ShouldContain("Missing required Bottle/Package dependency named 'B'");

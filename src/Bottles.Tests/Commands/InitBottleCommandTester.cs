@@ -1,12 +1,12 @@
 using Bottles.Commands;
 using FubuCore;
 using NUnit.Framework;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests.Commands
 {
     [TestFixture]
-    public class InitBottleCommandTester 
+    public class InitBottleCommandTester
     {
         IFileSystem fs = new FileSystem();
         private string thePath = "initpath";
@@ -18,10 +18,10 @@ namespace Bottles.Tests.Commands
         {
             fs.DeleteDirectory(thePath);
             theInput = new InitInput
-                       {
-                           Name = pakName,
-                           Path = thePath
-                       };
+            {
+                Name = pakName,
+                Path = thePath
+            };
         }
 
         string checkForAlias(string alias)
@@ -34,7 +34,7 @@ namespace Bottles.Tests.Commands
 
         void execute()
         {
-            
+
             var cmd = new InitCommand();
             cmd.Execute(theInput);
         }

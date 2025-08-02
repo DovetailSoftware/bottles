@@ -44,8 +44,6 @@ namespace Bottles.IntegrationTesting
 
         public void LoadViaZip(string folder)
         {
-            
-
             PackageRegistry.LoadPackages(x => {
                 x.Loader(new ZipFilePackageLoader(IntegrationTestContext.SolutionDirectory.AppendPath("exploded"), new string[]{folder}));
             });

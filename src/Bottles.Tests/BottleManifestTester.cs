@@ -1,6 +1,6 @@
 using FubuCore;
 using NUnit.Framework;
-using FubuTestingSupport;
+using Shouldly;
 using System.Linq;
 
 namespace Bottles.Tests
@@ -41,7 +41,7 @@ namespace Bottles.Tests
             manifest.ContentFileSet.ShouldBeNull();
 
             manifest.Assemblies.Any().ShouldBeFalse();
-            
+
         }
 
 

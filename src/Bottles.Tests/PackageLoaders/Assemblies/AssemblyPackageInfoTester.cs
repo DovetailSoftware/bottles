@@ -1,7 +1,7 @@
 using Bottles.PackageLoaders.Assemblies;
 using NUnit.Framework;
 using Rhino.Mocks;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests.PackageLoaders.Assemblies
 {
@@ -11,7 +11,7 @@ namespace Bottles.Tests.PackageLoaders.Assemblies
         [Test]
         public void assembly_package_adds_an_assembly_target_for_the_assembly()
         {
-            // This behavior is crucial.  If you add the assembly the wrong way, 
+            // This behavior is crucial.  If you add the assembly the wrong way,
             // Bottles tries to copy the assembly to the application bin directory
 
             var theAssembly = GetType().Assembly;

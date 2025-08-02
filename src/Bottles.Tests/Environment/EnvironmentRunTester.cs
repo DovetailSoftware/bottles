@@ -1,6 +1,6 @@
 using Bottles.Diagnostics;
 using Bottles.Environment;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -8,26 +8,26 @@ using System.IO;
 namespace Bottles.Tests.Environment
 {
     [TestFixture]
-    public class EnvironmentRunTester 
+    public class EnvironmentRunTester
     {
         [Test]
         public void find_specific_class_if_environment_class_is_specified()
         {
             var run = new EnvironmentRun()
-                      {
-                          EnvironmentClassName = typeof(FakeEnvironment).AssemblyQualifiedName
-                      };
+            {
+                EnvironmentClassName = typeof(FakeEnvironment).AssemblyQualifiedName
+            };
 
-            run.FindEnvironmentType(new PackageLog()).ShouldEqual(typeof (FakeEnvironment));
+            run.FindEnvironmentType(new PackageLog()).ShouldEqual(typeof(FakeEnvironment));
         }
 
         [Test]
         public void find_environment_class_by_scanning_assembly_if_no_class_is_specified()
         {
             var run = new EnvironmentRun()
-                      {
-                          EnvironmentClassName = typeof(FakeEnvironment).AssemblyQualifiedName
-                      };
+            {
+                EnvironmentClassName = typeof(FakeEnvironment).AssemblyQualifiedName
+            };
 
             run.FindEnvironmentType(new PackageLog()).ShouldEqual(typeof(FakeEnvironment));
         }
@@ -35,8 +35,9 @@ namespace Bottles.Tests.Environment
         [Test]
         public void build_app_domain_setup()
         {
-			var baseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
-            var run = new EnvironmentRun(){
+            var baseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1");
+            var run = new EnvironmentRun()
+            {
                 ApplicationBase = baseFolder,
                 ConfigurationFile = "web.config"
             };
@@ -52,10 +53,10 @@ namespace Bottles.Tests.Environment
         public void assert_is_valid_with_application_base_and_assembly_name_set_should_not_throw()
         {
             var run = new EnvironmentRun()
-                      {
-                          ApplicationBase = ".",
-                          AssemblyName = "SomeAssembly"
-                      };
+            {
+                ApplicationBase = ".",
+                AssemblyName = "SomeAssembly"
+            };
 
             run.AssertIsValid();
         }
@@ -64,10 +65,10 @@ namespace Bottles.Tests.Environment
         public void assert_is_valid_with_application_base_and_environment_class_name_but_not_assembly()
         {
             var run = new EnvironmentRun()
-                      {
-                          ApplicationBase = ".",
-                          EnvironmentClassName = "some class"
-                      };
+            {
+                ApplicationBase = ".",
+                EnvironmentClassName = "some class"
+            };
 
             run.AssertIsValid();
         }
@@ -75,11 +76,12 @@ namespace Bottles.Tests.Environment
         [Test]
         public void assert_is_valid_missing_application_base_throws()
         {
-            var run = new EnvironmentRun{
+            var run = new EnvironmentRun
+            {
                 EnvironmentClassName = "some class"
             };
 
-            Exception<EnvironmentRunnerException>.ShouldBeThrownBy(() =>
+            Should.Throw<EnvironmentRunnerException>(() =>
             {
                 run.AssertIsValid();
             }).Message.ShouldContain("ApplicationBase must be a valid folder");
@@ -88,11 +90,12 @@ namespace Bottles.Tests.Environment
         [Test]
         public void assert_is_valid_missing_both_environment_class_name_and_assembly_name_throws()
         {
-            var run = new EnvironmentRun(){
+            var run = new EnvironmentRun()
+            {
                 ApplicationBase = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "folder1")
             };
 
-            Exception<EnvironmentRunnerException>.ShouldBeThrownBy(() =>
+            Should.Throw<EnvironmentRunnerException>(() =>
             {
                 run.AssertIsValid();
             }).Message.ShouldContain("Either EnvironmentClassName or AssemblyName must be set");

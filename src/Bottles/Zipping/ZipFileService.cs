@@ -1,12 +1,12 @@
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Xml.Serialization;
 using Bottles.Diagnostics;
 using Bottles.Exploding;
 using FubuCore;
 using FubuCore.CommandLine;
-using Ionic.Zip;
-using System.Linq;
 
 namespace Bottles.Zipping
 {
@@ -25,13 +25,9 @@ namespace Bottles.Zipping
 
             _fileSystem.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            using (var zipFile = new ZipFile(fileName))
+            using (var archive = ZipFile.Open(fileName, ZipArchiveMode.Create))
             {
-                configure(new ZipFileWrapper(zipFile));
-
-                //ran into a lock issue - http://dotnetzip.codeplex.com/workitem/14252
-                zipFile.ParallelDeflateThreshold = -1;
-                zipFile.Save();
+                configure(new ZipFileWrapper(archive));
             }
         }
 
@@ -42,14 +38,15 @@ namespace Bottles.Zipping
             _fileSystem.DeleteDirectory(directory);
             _fileSystem.CreateDirectory(directory);
 
-            
             string fileName = Path.GetTempFileName();
             _fileSystem.WriteStreamToFile(fileName, stream);
 
-            using (var zipFile = new ZipFile(fileName))
-            {
-                zipFile.ExtractAll(directory, ExtractExistingFileAction.OverwriteSilently);
-            }
+            ZipFile.ExtractToDirectory(fileName, directory);
+
+            // using (var zipFile = new ZipFile(fileName))
+            // {
+            //     zipFile.ExtractAll(directory, ExtractExistingFileAction.OverwriteSilently);
+            // }
 
             _fileSystem.DeleteFile(fileName);
         }
@@ -65,45 +62,69 @@ namespace Bottles.Zipping
 
             _fileSystem.CreateDirectory(directory);
 
-            using (var zipFile = new ZipFile(fileName))
-            {
-                zipFile.ExtractAll(directory, ExtractExistingFileAction.OverwriteSilently);
-            }
+            ZipFile.ExtractToDirectory(fileName, directory);
+
+            // using (var zipFile = new ZipFile(fileName))
+            // {
+            //     zipFile.ExtractAll(directory, ExtractExistingFileAction.OverwriteSilently);
+            // }
         }
 
         public string GetVersion(string fileName)
         {
-            using (var zipFile = new ZipFile(fileName))
+            using (var archive = ZipFile.Open(fileName, ZipArchiveMode.Read))
             {
+                var entry = archive.Entries.SingleOrDefault(x => x.FullName == BottleFiles.VersionFile);
+                if (entry == null) return null;
 
-                var entry = zipFile.Entries.SingleOrDefault(x => x.FileName == BottleFiles.VersionFile);
-                if (entry == null) return Guid.Empty.ToString();
-
-                var stream = new MemoryStream();
-                entry.Extract(stream);
-
-                stream.Position = 0;
-                var reader = new StreamReader(stream);
-                return reader.ReadToEnd();
+                using(var stream = entry.Open())
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
+
+            // using (var zipFile = new ZipFile(fileName))
+            // {
+            //     var entry = zipFile.Entries.SingleOrDefault(x => x.FileName == BottleFiles.VersionFile);
+            //     if (entry == null) return Guid.Empty.ToString();
+            //
+            //     var stream = new MemoryStream();
+            //     entry.Extract(stream);
+            //
+            //     stream.Position = 0;
+            //     var reader = new StreamReader(stream);
+            //     return reader.ReadToEnd();
+            // }
         }
 
         public PackageManifest GetPackageManifest(string fileName)
         {
-            using (var zipFile = new ZipFile(fileName))
+            using (var archive = ZipFile.Open(fileName, ZipArchiveMode.Read))
             {
-
-                var entry = zipFile.Entries.SingleOrDefault(x => x.FileName == PackageManifest.FILE);
+                var entry = archive.Entries.SingleOrDefault(x => x.FullName == BottleFiles.VersionFile);
                 if (entry == null) return null;
 
-                var stream = new MemoryStream();
-                entry.Extract(stream);
-
-                stream.Position = 0;
-
-                var serializer = new XmlSerializer(typeof (PackageManifest));
-                return (PackageManifest) serializer.Deserialize(stream);
+                using(var stream = entry.Open())
+                {
+                    var serializer = new XmlSerializer(typeof (PackageManifest));
+                    return (PackageManifest) serializer.Deserialize(stream);
+                }
             }
+
+            // using (var zipFile = new ZipFile(fileName))
+            // {
+            //     var entry = zipFile.Entries.SingleOrDefault(x => x.FileName == PackageManifest.FILE);
+            //     if (entry == null) return null;
+            //
+            //     var stream = new MemoryStream();
+            //     entry.Extract(stream);
+            //
+            //     stream.Position = 0;
+            //
+            //     var serializer = new XmlSerializer(typeof (PackageManifest));
+            //     return (PackageManifest) serializer.Deserialize(stream);
+            // }
         }
     }
 }

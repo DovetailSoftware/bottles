@@ -3,7 +3,7 @@ using Bottles.Diagnostics;
 using Bottles.PackageLoaders.Directory;
 using FubuCore;
 using NUnit.Framework;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests
 {
@@ -22,7 +22,8 @@ namespace Bottles.Tests
             fs.CreateDirectory(thePathToScan, "bin");
 
             theLoader = new DirectoryPackageLoader(thePathToScan.ToFullPath());
-            var manifest = new PackageManifest{
+            var manifest = new PackageManifest
+            {
                 Name = "test-mani"
             };
 

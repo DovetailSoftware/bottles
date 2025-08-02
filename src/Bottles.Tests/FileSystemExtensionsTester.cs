@@ -5,7 +5,7 @@ using Bottles.Creation;
 using FubuCore;
 using NUnit.Framework;
 using Rhino.Mocks;
-using FubuTestingSupport;
+using Shouldly;
 
 namespace Bottles.Tests
 {
@@ -29,9 +29,7 @@ namespace Bottles.Tests
                 .Return(false);
 
             theFileSystem.FindBinaryDirectory(theFolder, CompileTarget.Debug.ToString())
-                .ShouldEqual(FileSystem.Combine(theFolder, "bin"));
-
-
+                .ShouldBe(FileSystem.Combine(theFolder, "bin"));
         }
 
         [Test]
@@ -42,7 +40,7 @@ namespace Bottles.Tests
                 .Return(true);
 
             theFileSystem.FindBinaryDirectory(theFolder, "Release")
-                .ShouldEqual(FileSystem.Combine(theFolder, "bin", CompileTarget.Release.ToString())); 
+                .ShouldBe(FileSystem.Combine(theFolder, "bin", CompileTarget.Release.ToString()));
         }
 
         [Test]
@@ -57,11 +55,11 @@ namespace Bottles.Tests
             var names = new FileSystem().FindAssemblyNames(fullPath);
 
             System.Console.WriteLine($"*********** {names.Join(", ")} ******");
-        
+
             names.ShouldContain("StructureMap");
             names.ShouldContain("Bottles");
             names.ShouldContain("Bottles.Tests");
             names.ShouldContain("FubuCore");
         }
     }
-}   
+}

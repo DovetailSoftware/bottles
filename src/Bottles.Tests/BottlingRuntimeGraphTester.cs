@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Bottles.Diagnostics;
-using FubuTestingSupport;
+using Shouldly;
 using NUnit.Framework;
 using System.Linq;
 using Rhino.Mocks;
@@ -107,7 +107,7 @@ namespace Bottles.Tests
             loader1 = new StubPackageLoader("1a", "1b", "1c");
             loader2 = new StubPackageLoader("2a", "2b");
             loader3 = new StubPackageLoader("3a", "3b", "3c");
-        
+
             ClassUnderTest.PushProvenance("A");
             ClassUnderTest.AddLoader(loader1);
 
@@ -130,7 +130,7 @@ namespace Bottles.Tests
             MockFor<IBottlingDiagnostics>().AssertWasCalled(x => x.LogObject(loader2, "B"));
         }
 
-        [Test] 
+        [Test]
         public void should_register_the_third_loader_after_popping_the_provenance()
         {
             MockFor<IBottlingDiagnostics>().AssertWasCalled(x => x.LogObject(loader3, "A"));
@@ -178,7 +178,7 @@ namespace Bottles.Tests
         public void the_first_package_found_has_priority()
         {
             var duplicates = loader3.Load(new PackageLog());
-        
+
             foundPackages.Any(x => ReferenceEquals(x, duplicates.First())).ShouldBeFalse();
             foundPackages.Any(x => ReferenceEquals(x, duplicates.Last())).ShouldBeFalse();
         }
@@ -217,7 +217,7 @@ namespace Bottles.Tests
             _packages = packages;
             _log = log;
 
-            
+
         }
 
         public IEnumerable<IPackageInfo> Packages
